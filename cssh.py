@@ -60,7 +60,7 @@ while True:
 	if n.startswith("exit"):
 		go2exit()
 	elif n in hosts:
-		cmd = 'ssh ' + n + ' -t "screen -raAd"'
+		cmd = 'ssh ' + n + ' -t "screen -raAd || screen"'
 		msg = ""
 		os.system(cmd)
 		os.system("clear")
