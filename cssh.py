@@ -10,7 +10,7 @@ import curses
 hosts = list()
 
 def parser():
-	for line in fileinput.input("/home/flo/.ssh/config"):
+	for line in fileinput.input("~/.ssh/config"):
 		if not line:
 			continue
 		else:
