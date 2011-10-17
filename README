@@ -1,0 +1,21 @@
+What is cssh.py?
+This script should help you to manage your hosts over ssh
+
+What is required?
+python - to run the script 
+ssh - for the network
+screen - for the session on the host
+
+How cssh.py works:
+At first it reads ~/.ssh/config (line 12).
+The script lists all available hosts. You are now able to connect to one.
+
+How you can use cssh.py:
+Typ in the hostname or the number in front of it to connect to the host. When the connection is closed you are back in the python script.
+
+How you can exit the script:
+Typ in exit or try CTRL+C or CTRL+D
+
+Nice to know:
+Don't call a host exit ;-)
+Be fair, it's my first try with python
