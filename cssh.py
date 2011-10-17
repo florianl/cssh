@@ -43,7 +43,7 @@ def go2exit():
 def catchedNr(n):
 	nr = int(n)
 	host = hosts[nr]
-	cmd = 'ssh ' + host + ' -t "screen -raAd"'
+	cmd = 'ssh ' + host + ' -t "screen -raAd || screen"'
 	os.system(cmd)
 
 msg = ""
