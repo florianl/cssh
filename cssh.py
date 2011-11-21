@@ -10,7 +10,7 @@ import curses
 hosts = list()
 
 def parser():
-	for line in fileinput.input("~/.ssh/config"):
+	for line in fileinput.input(os.path.expanduser('~/.ssh/config')):
 		if not line:
 			continue
 		else:
@@ -57,9 +57,7 @@ while True:
 	except EOFError:	# capture CTRL+D
 		go2exit()
 
-	if n.startswith("exit"):
-		go2exit()
-	elif n in hosts:
+	if n in hosts:
 		cmd = 'ssh ' + n + ' -t "screen -raAd || screen"'
 		msg = ""
 		os.system(cmd)
