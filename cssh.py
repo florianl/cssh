@@ -29,7 +29,7 @@ def printlist():
 
 	for item in hosts:
 		listid = hosts.index(item)
-		print listid, "\033[34m" + item + "\033[0m"
+		print "%3d" % listid, "\033[32m" + item + "\033[0m"
 
 # Handle CTRL+C
 def signal_handler(signal, frame):
