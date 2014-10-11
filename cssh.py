@@ -23,49 +23,74 @@ def parser():
 				continue
 	fileinput.close()
 
-def printlist():
+def printlist(scr):
+	i = 2
 	if hosts == []:
 		parser()
 
 	for item in hosts:
+		line = ""
 		listid = hosts.index(item)
-		print "%3d" % listid, "\033[32m" + item + "\033[0m"
+		scr.addstr(i,3, str(listid))
+		scr.addstr(i, 6, "- " +item)
+		i = i+1
+	i = i+1
+	scr.addstr(i,3, "# ")
+	return i
 
 # Handle CTRL+C
 def signal_handler(signal, frame):
+	curses.nocbreak()
+	curses.echo()
+	curses.endwin()
 	os.system("clear")
 	sys.exit(0)
 
-def go2exit():
+def ctrlExit():
+	curses.nocbreak()
+	curses.echo()
+	curses.endwin()
 	os.system("clear")
 	sys.exit(0)
 
-def catchedNr(n):
+def connect2host(n, line):
 	nr = int(n)
-	host = hosts[nr]
-	cmd = 'ssh ' + host + ' -t "screen -raAd || screen"'
-	os.system(cmd)
+	if nr <= len(hosts):
+		curses.endwin()
+		print "connecting ..."
+		host = hosts[nr]
+		cmd = 'ssh ' + host + ' -t "screen -raAd || screen"'
+		os.system(cmd)
+		scr.clear()
+		inputline = printlist(scr)
+	else :
+		scr.clear()
+		inputline = printlist(scr)
+		scr.addstr(inputline+1, 5, str(nr) +" is an unknown host", curses.A_BOLD)
+	scr.border(0)
+	scr.refresh()
 
-msg = ""
 os.system("clear")
 signal.signal(signal.SIGINT, signal_handler)
+scr = curses.initscr()
+curses.cbreak()
+curses.echo()
+inputline = printlist(scr)
+scr.border(0)
+scr.refresh()
 while True:
-	printlist()
-	print "\033[91m" + msg + "\033[0m"
 	try:
-		n = raw_input("# ")
-	except EOFError:	# capture CTRL+D
-		go2exit()
-
-	if n in hosts:
-		cmd = 'ssh ' + n + ' -t "screen -raAd || screen"'
-		msg = ""
-		os.system(cmd)
-		os.system("clear")
-	elif n.isdigit():
-		catchedNr(n)
-		msg = ""
-		os.system("clear")
+		n = scr.getstr(inputline,4, 5)
+	except EOFError:
+		ctrlExit()
+	if n.isdigit():
+		connect2host(n, inputline)
+	elif n.lower() == 'q':
+		ctrlExit()
+	elif n.lower() == 'exit':
+		ctrlExit()
 	else:
-		os.system("clear")
-		msg = "can't handle: " + n
+		inputline = printlist(scr)
+		scr.addstr(inputline+1, 5, n + " corresponds not to a valid host", curses.A_BOLD)
+		scr.border(0)
+		scr.refresh()
