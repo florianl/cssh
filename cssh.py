@@ -56,7 +56,7 @@ def ctrlExit():
 
 def connect2host(n, line):
 	nr = int(n)
-	if nr <= len(hosts):
+	if nr <= len(hosts) and nr != 0:
 		curses.endwin()
 		print "connecting ..."
 		host = hosts[nr]
