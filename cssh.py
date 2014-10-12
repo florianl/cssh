@@ -14,11 +14,12 @@ def parser():
 		if not line:
 			continue
 		else:
-			if line.startswith("HOST"):
-				s = line.strip()
-				s = line.strip("HOST")
-				s = s.strip()
-				hosts.append(s)
+			s = line.strip()
+			if s.lower().startswith("host"):
+				if s.lower().startswith("hostname"):
+					continue
+				h = s.split()
+				hosts.append(h[1])
 			else:
 				continue
 	fileinput.close()
