@@ -29,14 +29,24 @@ def printlist(scr):
 	if hosts == []:
 		parser()
 
+	j = scr.getmaxyx()
+
 	for item in hosts:
 		line = ""
 		listid = hosts.index(item)
-		scr.addstr(i,3, str(listid))
-		scr.addstr(i, 6, "- " +item)
-		i = i+1
-	i = i+1
-	scr.addstr(i,3, "# ")
+		if j[1] > 79:
+			if i%2 == 1:
+				scr.addstr(i-1, 43, str(listid))
+				scr.addstr(i-1, 46, "- " +item)
+			else:
+				scr.addstr(i, 3, str(listid))
+				scr.addstr(i, 6, "- " +item)
+		else:
+			scr.addstr(i, 3, str(listid))
+			scr.addstr(i, 6, "- " +item)
+		i=i+1
+	i = i+2
+	scr.addstr(i,6, "# ")
 	return i
 
 # Handle CTRL+C
@@ -88,7 +98,7 @@ scr.border(0)
 scr.refresh()
 while True:
 	try:
-		n = scr.getstr(inputline,4, 5)
+		n = scr.getstr(inputline,8, 7)
 	except EOFError:
 		ctrlExit()
 	if n.isdigit():
@@ -99,6 +109,6 @@ while True:
 		ctrlExit()
 	else:
 		inputline = printlist(scr)
-		scr.addstr(inputline+1, 5, n + " corresponds not to a valid host", curses.A_BOLD)
+		scr.addstr(inputline+1, 6, n + " corresponds not to a valid host", curses.A_BOLD)
 		scr.border(0)
 		scr.refresh()
