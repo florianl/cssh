@@ -96,6 +96,7 @@ curses.echo()
 inputline = printlist(scr)
 scr.border(0)
 scr.refresh()
+y, x = scr.getmaxyx()
 while True:
 	try:
 		n = scr.getstr(inputline,8, 7)
@@ -107,8 +108,12 @@ while True:
 		ctrlExit()
 	elif n.lower() == 'exit':
 		ctrlExit()
-	else:
+
+	resized = curses.is_term_resized(y, x)
+	if resized is True:
+		y, x = scr.getmaxyx()
+		scr.clear()
+		curses.resizeterm(y, x)
 		inputline = printlist(scr)
-		scr.addstr(inputline+1, 6, n + " corresponds not to a valid host", curses.A_BOLD)
 		scr.border(0)
 		scr.refresh()
