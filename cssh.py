@@ -26,25 +26,26 @@ def parser():
 
 def printlist(scr):
 	i = 2
+	l = 0
 	if hosts == []:
 		parser()
 
 	j = scr.getmaxyx()
+	k = j[1]/43
 
 	for item in hosts:
 		line = ""
 		listid = hosts.index(item)
-		if j[1] > 79:
-			if i%2 == 1:
-				scr.addstr(i-1, 43, str(listid))
-				scr.addstr(i-1, 46, "- " +item)
-			else:
-				scr.addstr(i, 3, str(listid))
-				scr.addstr(i, 6, "- " +item)
+		if k > 1:
+			scr.addstr(i, 3+l*40, str(listid))
+			scr.addstr(i, 6+l*40, "- " +item)
+			l=(l+1)%k
+			if l==0:
+				i=i+1
 		else:
 			scr.addstr(i, 3, str(listid))
 			scr.addstr(i, 6, "- " +item)
-		i=i+1
+			i=i+1
 	i = i+2
 	scr.addstr(i,6, "# ")
 	return i
