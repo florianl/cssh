@@ -33,6 +33,14 @@ def printlist(scr):
 	j = scr.getmaxyx()
 	k = j[1]/43
 
+	# We can't scroll the list, yet
+	if len(hosts) >= (k*(j[0]-1)):
+		curses.nocbreak()
+		curses.echo()
+		curses.endwin()
+		os.system("clear")
+		sys.exit(-1)
+
 	for item in hosts:
 		line = ""
 		listid = hosts.index(item)
